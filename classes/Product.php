@@ -128,5 +128,20 @@ class Product {
         $stmt = $this->conn->prepare($query);
         return $stmt->execute([$id]);
     }
+    
+    public function getSearchSuggestions($query) {
+        $sql = "SELECT DISTINCT judul 
+                FROM " . $this->table_name . " 
+                WHERE judul LIKE :query 
+                ORDER BY judul 
+                LIMIT 10";
+        
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindValue(':query', '%' . $query . '%');
+        $stmt->execute();
+        
+        $results = $stmt->fetchAll(PDO::FETCH_COLUMN);
+        return $results;
+    }
 }
 ?>

@@ -7,6 +7,18 @@ class Wishlist {
         $this->conn = $db;
     }
     
+    public function add($user_id, $product_id) {
+        return $this->addToWishlist($user_id, $product_id);
+    }
+    
+    public function remove($user_id, $product_id) {
+        return $this->removeFromWishlist($user_id, $product_id);
+    }
+    
+    public function getUserWishlist($user_id) {
+        return $this->getWishlistItems($user_id);
+    }
+    
     public function addToWishlist($user_id, $product_id) {
         // Check if item already exists
         if ($this->isInWishlist($user_id, $product_id)) {
