@@ -24,12 +24,12 @@ $user_data = $user->getUserById($_SESSION['user_id']);
 $user_stats = $user->getUserStats($_SESSION['user_id']);
 $user_products = $product->getAll(10, null, null, null, null, $_SESSION['user_id']);
 
-// Get cart count
-$cart_count = 0;
+// Get wishlist count
+$wishlist_count = 0;
 if (isLoggedIn()) {
-    require_once 'classes/Cart.php';
-    $cart = new Cart($db);
-    $cart_count = $cart->getItemCount($_SESSION['user_id']);
+    require_once 'classes/Wishlist.php';
+    $wishlist = new Wishlist($db);
+    $wishlist_count = $wishlist->getWishlistCount($_SESSION['user_id']);
 }
 ?>
 
@@ -59,15 +59,10 @@ if (isLoggedIn()) {
             <ul class="nav-menu">
                 <li><a href="products.php">Semua Produk</a></li>
                 <li><a href="sell.php" class="btn btn-primary"><span class="icon">+</span> Jual/Donasi</a></li>
-                <li><a href="wishlist.php"><span class="icon">♡</span></a></li>
-                <li>
-                    <a href="cart.php" class="cart-badge">
-                        <span class="icon">🛒</span>
-                        <?php if ($cart_count > 0): ?>
-                            <span class="badge"><?= $cart_count ?></span>
-                        <?php endif; ?>
-                    </a>
-                </li>
+                <li><a href="wishlist.php"><span class="icon">♡</span> Wishlist (<?= $wishlist_count ?>)</a></li>
+                <?php if (isAdmin()): ?>
+                    <li><a href="admin.php"><span class="icon">🛡️</span> Admin</a></li>
+                <?php endif; ?>
                 <li><a href="dashboard.php" class="active"><span class="icon">👤</span> Dashboard</a></li>
                 <li><a href="logout.php">Keluar</a></li>
             </ul>
@@ -81,8 +76,10 @@ if (isLoggedIn()) {
             <ul class="nav-menu">
                 <li><a href="products.php">Semua Produk</a></li>
                 <li><a href="sell.php"><span class="icon">+</span> Jual/Donasi</a></li>
-                <li><a href="wishlist.php"><span class="icon">♡</span> Wishlist</a></li>
-                <li><a href="cart.php"><span class="icon">🛒</span> Keranjang (<?= $cart_count ?>)</a></li>
+                <li><a href="wishlist.php"><span class="icon">♡</span> Wishlist (<?= $wishlist_count ?>)</a></li>
+                <?php if (isAdmin()): ?>
+                    <li><a href="admin.php"><span class="icon">🛡️</span> Admin</a></li>
+                <?php endif; ?>
                 <li><a href="dashboard.php"><span class="icon">👤</span> Dashboard</a></li>
                 <li><a href="logout.php">Keluar</a></li>
             </ul>

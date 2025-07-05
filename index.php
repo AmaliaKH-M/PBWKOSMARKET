@@ -1,5 +1,7 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 require_once 'config/kosmarket_db.php';
 require_once 'config/helpers.php';
 require_once 'classes/Product.php';
@@ -12,12 +14,12 @@ $product = new Product($db);
 $featured_products = $product->getAll(8);
 $categories = $product->getCategories();
 
-// Get cart count for logged in user
-$cart_count = 0;
+// Get wishlist count for logged in user
+$wishlist_count = 0;
 if (isLoggedIn()) {
-    require_once 'classes/Cart.php';
-    $cart = new Cart($db);
-    $cart_count = $cart->getItemCount($_SESSION['user_id']);
+    require_once 'classes/Wishlist.php';
+    $wishlist = new Wishlist($db);
+    $wishlist_count = $wishlist->getWishlistCount($_SESSION['user_id']);
 }
 ?>
 
@@ -47,17 +49,12 @@ if (isLoggedIn()) {
 
             <ul class="nav-menu">
                 <li><a href="products.php">Semua Produk</a></li>
+                <li><a href="#categories" class="nav-link-section">Kategori Populer</a></li>
+                <li><a href="#featured" class="nav-link-section">Barang Pilihan</a></li>
+                <li><a href="#how-it-works" class="nav-link-section">Cara Kerja</a></li>
                 <?php if (isLoggedIn()): ?>
                     <li><a href="sell.php" class="btn btn-primary"><span class="icon">+</span> Jual/Donasi</a></li>
-                    <li><a href="wishlist.php"><span class="icon">♡</span></a></li>
-                    <li>
-                        <a href="cart.php" class="cart-badge">
-                            <span class="icon">🛒</span>
-                            <?php if ($cart_count > 0): ?>
-                                <span class="badge"><?= $cart_count ?></span>
-                            <?php endif; ?>
-                        </a>
-                    </li>
+                    <li><a href="wishlist.php"><span class="icon">♡</span> Wishlist (<?= $wishlist_count ?>)</a></li>
                     <li><a href="dashboard.php"><span class="icon">👤</span> Dashboard</a></li>
                     <li><a href="logout.php">Keluar</a></li>
                 <?php else: ?>
@@ -74,10 +71,12 @@ if (isLoggedIn()) {
         <div class="mobile-menu">
             <ul class="nav-menu">
                 <li><a href="products.php">Semua Produk</a></li>
+                <li><a href="#categories" class="nav-link-section">Kategori Populer</a></li>
+                <li><a href="#featured" class="nav-link-section">Barang Pilihan</a></li>
+                <li><a href="#how-it-works" class="nav-link-section">Cara Kerja</a></li>
                 <?php if (isLoggedIn()): ?>
                     <li><a href="sell.php"><span class="icon">+</span> Jual/Donasi</a></li>
-                    <li><a href="wishlist.php"><span class="icon">♡</span> Wishlist</a></li>
-                    <li><a href="cart.php"><span class="icon">🛒</span> Keranjang (<?= $cart_count ?>)</a></li>
+                    <li><a href="wishlist.php"><span class="icon">♡</span> Wishlist (<?= $wishlist_count ?>)</a></li>
                     <li><a href="dashboard.php"><span class="icon">👤</span> Dashboard</a></li>
                     <li><a href="logout.php">Keluar</a></li>
                 <?php else: ?>
@@ -98,7 +97,7 @@ if (isLoggedIn()) {
             </div>
         </section>
 
-        <section class="categories">
+        <section id="categories" class="categories">
             <div class="container">
                 <h2 class="text-center mb-4">Kategori Populer</h2>
                 <p class="text-center text-muted mb-5">Temukan barang preloved berkualitas dari berbagai kategori</p>
@@ -116,7 +115,7 @@ if (isLoggedIn()) {
             </div>
         </section>
 
-        <section class="container">
+        <section id="featured" class="container">
             <div class="d-flex justify-between align-center mb-4">
                 <div>
                     <h2>Barang Pilihan</h2>
@@ -165,7 +164,7 @@ if (isLoggedIn()) {
 
                             <div class="card-footer">
                                 <span class="card-seller">oleh <?= htmlspecialchars($item['nama_penjual']) ?></span>
-                                <a href="product.php?id=<?= $item['id_produk'] ?>" class="btn btn-primary">
+                                <a href="product.php?id=<?= $item['id_produk'] ?>" class="btn btn-primary view-btn">
                                     <span class="view-icon">👁</span> Lihat
                                 </a>
                             </div>
@@ -175,7 +174,7 @@ if (isLoggedIn()) {
             </div>
         </section>
 
-        <section class="categories">
+        <section id="how-it-works" class="categories">
             <div class="container">
                 <h2 class="text-center mb-4">Cara Kerja KosMarket</h2>
                 <p class="text-center text-muted mb-5">Mudah dan simpel! Ikuti 4 langkah berikut</p>
