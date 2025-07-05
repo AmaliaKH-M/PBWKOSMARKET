@@ -10,7 +10,7 @@ class Product {
     public function getAll($limit = 10, $search = null, $category = null, $kondisi = null, $tipe = null, $seller_id = null) {
         $query = "SELECT p.*, u.nama as nama_penjual, u.lokasi_kos as lokasi_penjual, k.nama_kategori 
                   FROM " . $this->table_name . " p 
-                  LEFT JOIN users u ON p.id_penjual = u.id_user 
+                  LEFT JOIN users u ON p.id_user = u.id_user 
                   LEFT JOIN kategori k ON p.id_kategori = k.id_kategori 
                   WHERE 1=1";
         
@@ -37,7 +37,7 @@ class Product {
         }
         
         if ($seller_id) {
-            $query .= " AND p.id_penjual = :seller_id";
+            $query .= " AND p.id_user = :seller_id";
             $params[':seller_id'] = $seller_id;
         }
         
@@ -72,7 +72,7 @@ class Product {
     public function getById($id) {
         $query = "SELECT p.*, u.nama as nama_penjual, u.lokasi_kos as lokasi_penjual, u.nomor_wa, k.nama_kategori 
                   FROM " . $this->table_name . " p 
-                  LEFT JOIN users u ON p.id_penjual = u.id_user 
+                  LEFT JOIN users u ON p.id_user = u.id_user 
                   LEFT JOIN kategori k ON p.id_kategori = k.id_kategori 
                   WHERE p.id_produk = ?";
         
@@ -83,12 +83,12 @@ class Product {
     
     public function create($data) {
         $query = "INSERT INTO " . $this->table_name . " 
-                  (id_penjual, id_kategori, judul, deskripsi, harga, harga_asli, kondisi, tipe_barang, foto1, foto2, foto3, created_at) 
+                  (id_user, id_kategori, judul, deskripsi, harga, harga_asli, kondisi, tipe_barang, foto1, foto2, foto3, created_at) 
                   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())";
         
         $stmt = $this->conn->prepare($query);
         return $stmt->execute([
-            $data['id_penjual'], 
+            $data['id_user'], 
             $data['id_kategori'], 
             $data['judul'], 
             $data['deskripsi'],

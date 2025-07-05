@@ -35,7 +35,7 @@ class Wishlist {
         $query = "SELECT w.*, p.judul, p.harga, p.foto1, p.tipe_barang, p.kondisi, u.nama as nama_penjual, u.lokasi_kos as lokasi_penjual
                   FROM " . $this->table_name . " w
                   JOIN produk p ON w.id_produk = p.id_produk
-                  JOIN users u ON p.id_penjual = u.id_user
+                  JOIN users u ON p.id_user = u.id_user
                   WHERE w.id_user = ?
                   ORDER BY w.created_at DESC";
         

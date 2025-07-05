@@ -16,6 +16,7 @@ CREATE TABLE `users` (
   `nomor_wa` varchar(20) NOT NULL,
   `lokasi_kos` varchar(100) NOT NULL,
   `role` enum('user','admin') DEFAULT 'user',
+  `is_active` tinyint(1) DEFAULT 1,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`id_user`),

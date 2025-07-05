@@ -119,15 +119,76 @@
 - 🖼️ Image modal untuk view photos
 - 📱 Fully responsive design
 
-## 🚀 **Cara Menggunakan**
+## �️ **STRUKTUR FOLDER YANG BENAR**
 
-1. **Setup Database**: Import `kosmarket_db_simple.sql`
-2. **Configuration**: Check `config/kosmarket_db.php` untuk database settings
-3. **Admin Access**: Login dengan email `admin@kosmarket.com` (password default: `password`)
-4. **User Features**: Register sebagai user biasa untuk experience normal
-5. **Wishlist**: Click ❤️ pada produk untuk add/remove wishlist
-6. **Navigation**: Gunakan menu header untuk jump ke sections
-7. **Images**: Click pada gambar produk untuk view dalam modal
+```
+kosmarket/
+├── index.php                 # Homepage utama
+├── dashboard.php             # User dashboard  
+├── admin.php                 # Admin dashboard
+├── wishlist.php              # Halaman wishlist
+├── login.php                 # Login page
+├── register.php              # Register page
+├── logout.php                # Logout handler
+├── products.php              # Halaman semua produk
+├── product.php               # Detail produk
+├── sell.php                  # Jual/donasi barang
+├── kosmarket_db_simple.sql   # Database structure
+├── PERUBAHAN_KOSMARKET.md    # Dokumentasi ini
+│
+├── config/                   # Konfigurasi
+│   ├── kosmarket_db.php      # Database connection + session fix
+│   └── helpers.php           # Helper functions
+│
+├── classes/                  # PHP Classes  
+│   ├── Product.php           # Product management
+│   ├── User.php              # User management
+│   ├── Cart.php              # Cart class (tidak dipakai)
+│   └── Wishlist.php          # Wishlist functionality
+│
+├── ajax/                     # AJAX handlers
+│   ├── wishlist.php          # Wishlist add/remove
+│   ├── wishlist_status.php   # Check wishlist status
+│   ├── admin_product.php     # Admin product operations
+│   └── admin_user.php        # Admin user operations
+│
+├── assets/                   # Static assets
+│   ├── css/
+│   │   └── style.css         # All styling (Poppins + Dancing Script)
+│   ├── js/
+│   │   └── script.js         # Interactive features
+│   ├── images/
+│   │   └── no-image.svg      # Default product image
+│   └── Background.jpg        # Hero background (placeholder)
+│
+└── uploads/                  # Upload directory
+    └── produk/               # Product images (auto-created)
+```
+
+## 🚀 **Cara Setup & Menggunakan**
+
+### 1. **Database Setup**
+```sql
+-- Import file SQL ini ke MySQL
+mysql -u root -p < kosmarket_db_simple.sql
+```
+
+### 2. **Web Server Setup**
+- Letakkan folder `kosmarket/` di dalam `htdocs` (XAMPP) atau `www` (WAMPP)
+- Pastikan PHP dan MySQL running
+- Akses via: `http://localhost/kosmarket/`
+
+### 3. **Login & Testing**
+- **Admin**: Email `admin@kosmarket.com`, Password `password`  
+- **User**: Register user baru atau gunakan sample users dari SQL
+- **Default Password**: `password` untuk semua sample users
+
+### 4. **Testing Fitur**
+- ✅ **Wishlist**: Click ❤️ pada produk
+- ✅ **Navigation**: Click menu header untuk smooth scroll ke sections  
+- ✅ **Image View**: Click gambar produk untuk modal view
+- ✅ **Admin Panel**: Login sebagai admin untuk akses panel admin
+- ✅ **Upload**: Test upload gambar di halaman sell
 
 ## 🔧 **Technical Stack**
 

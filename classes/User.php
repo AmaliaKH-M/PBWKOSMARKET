@@ -21,7 +21,7 @@ class User {
                     SUM(CASE WHEN status = 'terjual' THEN 1 ELSE 0 END) as terjual,
                     SUM(CASE WHEN status = 'terdonasi' THEN 1 ELSE 0 END) as terdonasi
                   FROM produk 
-                  WHERE id_penjual = ?";
+                  WHERE id_user = ?";
         
         $stmt = $this->conn->prepare($query);
         $stmt->execute([$user_id]);
@@ -75,6 +75,12 @@ class User {
         $stmt->bindValue(1, $limit, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+    public function toggleStatus($user_id) {
+        $query = "UPDATE " . $this->table_name . " SET is_active = CASE WHEN is_active = 1 THEN 0 ELSE 1 END WHERE id_user = ?";
+        $stmt = $this->conn->prepare($query);
+        return $stmt->execute([$user_id]);
     }
 }
 ?>
