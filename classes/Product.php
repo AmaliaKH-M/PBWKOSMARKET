@@ -8,7 +8,7 @@ class Product {
     }
     
     public function getAll($limit = 10, $search = null, $category = null, $kondisi = null, $tipe = null, $seller_id = null) {
-        $query = "SELECT p.*, u.nama as nama_penjual, u.lokasi_kos as lokasi_penjual, k.nama_kategori 
+        $query = "SELECT p.*, u.nama as nama_penjual, u.lokasi_kos as lokasi_penjual, u.nomor_wa, k.nama_kategori 
                   FROM " . $this->table_name . " p 
                   LEFT JOIN users u ON p.id_penjual = u.id_user 
                   LEFT JOIN kategori k ON p.id_kategori = k.id_kategori 

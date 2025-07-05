@@ -48,7 +48,6 @@ $categories = $product->getCategories();
                 <li><a href="products.php" class="active">Semua Produk</a></li>
                 <?php if (isLoggedIn()): ?>
                     <li><a href="sell.php" class="btn btn-primary"><span class="icon">+</span> Jual/Donasi</a></li>
-                    <li><a href="wishlist.php"><span class="icon">❤️</span> Wishlist</a></li>
                     <li><a href="dashboard.php"><span class="icon">👤</span> Dashboard</a></li>
                     <li><a href="logout.php">Keluar</a></li>
                 <?php else: ?>
@@ -67,7 +66,6 @@ $categories = $product->getCategories();
                 <li><a href="products.php">Semua Produk</a></li>
                 <?php if (isLoggedIn()): ?>
                     <li><a href="sell.php"><span class="icon">+</span> Jual/Donasi</a></li>
-                    <li><a href="wishlist.php"><span class="icon">❤️</span> Wishlist</a></li>
                     <li><a href="dashboard.php"><span class="icon">👤</span> Dashboard</a></li>
                     <li><a href="logout.php">Keluar</a></li>
                 <?php else: ?>
@@ -153,12 +151,6 @@ $categories = $product->getCategories();
                             <div class="ribbon <?= $item['tipe_barang'] === 'donasi' ? 'free' : '' ?>">
                                 <span><?= $item['tipe_barang'] === 'donasi' ? 'GRATIS' : 'DIJUAL' ?></span>
                             </div>
-
-                            <?php if (isLoggedIn()): ?>
-                                <button class="wishlist-btn" data-product-id="<?= $item['id_produk'] ?>" onclick="toggleWishlist(<?= $item['id_produk'] ?>)">
-                                    <span class="heart">❤️</span>
-                                </button>
-                            <?php endif; ?>
                         </div>
 
                         <div class="card-body">
@@ -183,9 +175,22 @@ $categories = $product->getCategories();
 
                             <div class="card-footer">
                                 <span class="card-seller">oleh <?= htmlspecialchars($item['nama_penjual']) ?></span>
-                                <a href="product.php?id=<?= $item['id_produk'] ?>" class="btn btn-primary">
-                                    <span class="view-icon">👁</span> Lihat
-                                </a>
+                                <div class="card-actions">
+                                    <a href="product.php?id=<?= $item['id_produk'] ?>" class="btn btn-outline btn-sm">
+                                        <span class="view-icon">👁</span> Lihat
+                                    </a>
+                                    <?php if (!empty($item['nomor_wa'])): ?>
+                                        <?php 
+                                        $whatsapp_message = "Halo, saya tertarik dengan produk " . htmlspecialchars($item['judul']) . 
+                                                           ($item['tipe_barang'] === 'jual' ? " seharga " . formatRupiah($item['harga']) : " (GRATIS)") . 
+                                                           ". Apakah masih tersedia?";
+                                        $whatsapp_url = "https://wa.me/62" . ltrim($item['nomor_wa'], '0') . "?text=" . urlencode($whatsapp_message);
+                                        ?>
+                                        <a href="<?= $whatsapp_url ?>" target="_blank" class="btn btn-primary btn-sm">
+                                            <span class="wa-icon">💬</span> WhatsApp
+                                        </a>
+                                    <?php endif; ?>
+                                </div>
                             </div>
                         </div>
                     </div>
